@@ -1,5 +1,5 @@
 const invariant = require('invariant')
-const createActionCreator = require('redux-actions')
+const { createAction } = require('redux-actions')
 const createActionTypes = require('feathers-action-types')
 const isArray = Array.isArray
 
@@ -9,122 +9,122 @@ const constants = require('./constants')
  * returns synchronous flux action creators
  * corresponding to that feathers resource.
  *
- * @param string resourceName
+ * @param string serviceName
  * @param object config
  * @return object syncActionCreators
  */
-function createSyncActionCreators (resourceName, config) {
-  if (resourceName == null) throw new Error('createSyncActionCreators: Expected resourceName')
+function createSyncActionCreators (serviceName, config) {
+  if (serviceName == null) throw new Error('createSyncActionCreators: Expected serviceName')
 
   config = config || {}
 
-  const actionTypes = createActionTypes(resourceName)
+  const actionTypes = createActionTypes(serviceName)
   const key = config.key || constants.DEFAULT_KEY
 
   return {
-    findStart: createActionCreator(
-      actionTypes.fetchStart,
+    findStart: createAction(
+      actionTypes.findStart,
       (params) => ({ params }),
       (params, meta) => meta
     ),
 
-    findSuccess: createActionCreator(
+    findSuccess: createAction(
       actionTypes.findSuccess,
       manyEntitiesHandler('findSuccess'),
       (data, meta) => meta
     ),
 
-    findError: createActionCreator(
+    findError: createAction(
       actionTypes.findError,
       errorHandler('findError'),
       (err, meta) => meta
     ),
 
-    getStart: createActionCreator(
+    getStart: createAction(
       actionTypes.getStart,
       (id, params) => ({ id, params }),
       (id, params, meta) => meta
     ),
 
-    getSuccess: createActionCreator(
+    getSuccess: createAction(
       actionTypes.getSuccess,
       oneEntityHandler('getSuccess'),
       (data, meta) => meta
     ),
 
-    getError: createActionCreator(
+    getError: createAction(
       actionTypes.getError,
       errorHandler('getError'),
       (err, meta) => meta
     ),
 
-    createStart: createActionCreator(
+    createStart: createAction(
       actionTypes.createStart,
       (data, params) => ({ data, params }),
       (data, params, meta) => meta
     ),
 
-    createSuccess: createActionCreator(
+    createSuccess: createAction(
       actionTypes.createSuccess,
       oneEntityHandler('createSuccess'),
       (data, meta) => meta
     ),
 
-    createError: createActionCreator(
+    createError: createAction(
       actionTypes.createError,
       errorHandler('createError'),
       (err, meta) => meta
     ),
 
-    updateStart: createActionCreator(
+    updateStart: createAction(
       actionTypes.updateStart,
       (id, data, params) => ({ id, data, params }),
       (id, data, params, meta) => meta
     ),
 
-    updateSuccess: createActionCreator(
+    updateSuccess: createAction(
       actionTypes.updateSuccess,
       oneEntityHandler('updateSuccess'),
       (data, meta) => meta
     ),
 
-    updateError: createActionCreator(
+    updateError: createAction(
       actionTypes.updateError,
       errorHandler('updateError'),
       (err, meta) => meta
     ),
 
-    patchStart: createActionCreator(
+    patchStart: createAction(
       actionTypes.patchStart,
       (id, data, params) => ({ id, data, params }),
       (id, data, params, meta) => meta
     ),
 
-    patchSuccess: createActionCreator(
+    patchSuccess: createAction(
       actionTypes.patchSuccess,
       oneEntityHandler('patchSuccess'),
       (data, meta) => meta
     ),
 
-    patchError: createActionCreator(
+    patchError: createAction(
       actionTypes.patchError,
       errorHandler('patchError'),
       (err, meta) => meta
     ),
 
-    removeStart: createActionCreator(
+    removeStart: createAction(
       actionTypes.removeStart,
       (id, params) => ({ id, params }),
       (id, params, meta) => meta
     ),
 
-    removeSuccess: createActionCreator(
+    removeSuccess: createAction(
       actionTypes.removeSuccess,
       oneEntityHandler('removeSuccess'),
       (data, meta) => meta
     ),
 
-    removeError: createActionCreator(
+    removeError: createAction(
       actionTypes.removeError,
       errorHandler('removeError'),
       (err, meta) => meta
@@ -146,8 +146,10 @@ function createSyncActionCreators (resourceName, config) {
   }
 
   function errorHandler (actionCreatorName) {
-    assertError(actionCreatorName, error)
-    return error
+    return function (err) {
+      assertError(actionCreatorName, error)
+      return error
+    }
   }
 
   function assertError(actionCreatorName, error) {
