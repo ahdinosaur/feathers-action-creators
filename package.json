@@ -1,0 +1,52 @@
+{
+  "name": "feathers-action-creators",
+  "version": "1.0.0",
+  "description": "redux action creators for feathers services",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test.js"
+  },
+  "dependencies": {
+    "babel-preset-es2015": "^6.3.13",
+    "babelify": "^7.2.0",
+    "feathers-action-types": "^1.0.0",
+    "invariant": "^2.2.0",
+    "redux-actions": "^0.8.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015"
+          ]
+        }
+      ]
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahdinosaur/crud-action-creators.git"
+  },
+  "keywords": [
+    "redux",
+    "actions",
+    "action",
+    "creators",
+    "crud",
+    "scrud",
+    "rest",
+    "api"
+  ],
+  "author": "Mikey <michael.williams@enspiral.com> (http://dinosaur.os)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ahdinosaur/crud-action-creators/issues"
+  },
+  "homepage": "https://github.com/ahdinosaur/crud-action-creators#readme"
+}
