@@ -17,6 +17,8 @@ function createSyncActionCreators (serviceName, config) {
   if (serviceName == null) throw new Error('createSyncActionCreators: Expected serviceName')
 
   config = config || {}
+  
+  const metaCreators = config.metaCreators || {}
 
   const actionTypes = createActionTypes(serviceName)
   const key = config.key || constants.DEFAULT_KEY
@@ -25,109 +27,109 @@ function createSyncActionCreators (serviceName, config) {
     findStart: createAction(
       actionTypes.findStart,
       (params) => ({ params }),
-      (params, meta) => meta
+      metaCreators.findStart
     ),
 
     findSuccess: createAction(
       actionTypes.findSuccess,
       manyEntitiesHandler('findSuccess'),
-      (data, meta) => meta
+      metaCreators.findSuccess
     ),
 
     findError: createAction(
       actionTypes.findError,
       errorHandler('findError'),
-      (err, meta) => meta
+      metaCreators.findError
     ),
 
     getStart: createAction(
       actionTypes.getStart,
       (id, params) => ({ id, params }),
-      (id, params, meta) => meta
+      metaCreators.getStart
     ),
 
     getSuccess: createAction(
       actionTypes.getSuccess,
       oneEntityHandler('getSuccess'),
-      (data, meta) => meta
+      metaCreators.getSuccess
     ),
 
     getError: createAction(
       actionTypes.getError,
       errorHandler('getError'),
-      (err, meta) => meta
+      metaCreators.getError
     ),
 
     createStart: createAction(
       actionTypes.createStart,
       (data, params) => ({ data, params }),
-      (data, params, meta) => meta
+      metaCreators.createStart
     ),
 
     createSuccess: createAction(
       actionTypes.createSuccess,
       oneEntityHandler('createSuccess'),
-      (data, meta) => meta
+      metaCreators.createSuccess
     ),
 
     createError: createAction(
       actionTypes.createError,
       errorHandler('createError'),
-      (err, meta) => meta
+      metaCreators.createError
     ),
 
     updateStart: createAction(
       actionTypes.updateStart,
       (id, data, params) => ({ id, data, params }),
-      (id, data, params, meta) => meta
+      metaCreators.updateStart
     ),
 
     updateSuccess: createAction(
       actionTypes.updateSuccess,
       oneEntityHandler('updateSuccess'),
-      (data, meta) => meta
+      actionTypes.updateSuccess
     ),
 
     updateError: createAction(
       actionTypes.updateError,
       errorHandler('updateError'),
-      (err, meta) => meta
+      metaCreators.updateError
     ),
 
     patchStart: createAction(
       actionTypes.patchStart,
       (id, data, params) => ({ id, data, params }),
-      (id, data, params, meta) => meta
+      metaCreators.patchStart
     ),
 
     patchSuccess: createAction(
       actionTypes.patchSuccess,
       oneEntityHandler('patchSuccess'),
-      (data, meta) => meta
+      metaCreators.patchSuccess
     ),
 
     patchError: createAction(
       actionTypes.patchError,
       errorHandler('patchError'),
-      (err, meta) => meta
+      metaCreators.patchError
     ),
 
     removeStart: createAction(
       actionTypes.removeStart,
       (id, params) => ({ id, params }),
-      (id, params, meta) => meta
+      metaCreators.removeStart
     ),
 
     removeSuccess: createAction(
       actionTypes.removeSuccess,
       oneEntityHandler('removeSuccess'),
-      (data, meta) => meta
+      metaCreators.removeSuccess
     ),
 
     removeError: createAction(
       actionTypes.removeError,
       errorHandler('removeError'),
-      (err, meta) => meta
+      metaCreators.removeError
     ),
   }
 

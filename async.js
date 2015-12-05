@@ -17,33 +17,35 @@ function createAsyncActionCreators (service, syncActionCreators, config) {
 
   return {
     //find: (params) => {
-    find: createAsyncActionCreator(service, 'find', 1),
+    find: createAsyncActionCreator(service, 'find'),
     //get: (id, params) => {},
-    get: createAsyncActionCreator(service, 'get', 2),
+    get: createAsyncActionCreator(service, 'get'),
     //create: (data, params) => {},
-    create: createAsyncActionCreator(service, 'create', 1),
+    create: createAsyncActionCreator(service, 'create'),
     //update: (id, data, params) => {},
-    update: createAsyncActionCreator(service, 'update', 1),
+    update: createAsyncActionCreator(service, 'update'),
     //patch: (id, data, params) => {},
-    patch: createAsyncActionCreator(service, 'patch', 1),
+    patch: createAsyncActionCreator(service, 'patch'),
     //remove: (id, params) => {}
-    remove: createAsyncActionCreator(service, 'remove', 1)
+    remove: createAsyncActionCreator(service, 'remove')
   }
 
-  function createAsyncActionCreator (service, methodName, numArgs) {
+  function createAsyncActionCreator (service, methodName) {
       return function () {
-        const args = slice(arguments, 0, numArgs)
-        const meta = arguments[numArgs]
+        const args = slice(arguments)
 
         return (dispatch, getState) => {
-          dispatch(syncActionCreators[`${methodName}Start`].apply(this, args.concat(meta)))
+          // TODO don't use apply for performance reasons
+          dispatch(
+            syncActionCreators[`${methodName}Start`].apply(syncActionCreators, args)
+          )
 
           return service[methodName].apply(service, args)
             .then(data => {
-              return dispatch(syncActionCreators[`${methodName}Success`](data, meta))
+              return dispatch(syncActionCreators[`${methodName}Success`](data))
             })
             .catch(err => {
-              return dispatch(syncActionCreators[`${methodName}Error`](err, meta))
+              return dispatch(syncActionCreators[`${methodName}Error`](err))
             })
         }
       }
@@ -51,7 +53,5 @@ function createAsyncActionCreators (service, syncActionCreators, config) {
 }
 
 function slice () {
-  return Array.prototype.slice.call(
-    arguments[0], arguments[1], arguments[2]
-  )
+  return Array.prototype.slice.call(arguments[0])
 }
