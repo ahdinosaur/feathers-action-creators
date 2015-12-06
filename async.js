@@ -34,18 +34,26 @@ function createAsyncActionCreators (service, syncActionCreators, config) {
       return function () {
         const args = slice(arguments)
 
-        return (dispatch, getState) => {
+        return (dispatch) => {
+          const startCreator = syncActionCreators[`${methodName}Start`]
           // TODO don't use apply for performance reasons
-          dispatch(
-            syncActionCreators[`${methodName}Start`].apply(syncActionCreators, args)
-          )
+          const startAction = startCreator.apply(syncActionCreators, args)
 
+          dispatch(startAction)
+
+          // TODO don't use apply for performance reasons
           return service[methodName].apply(service, args)
-            .then(data => {
-              return dispatch(syncActionCreators[`${methodName}Success`](data))
+            .then(body => {
+              const successCreator = syncActionCreators[`${methodName}Success`]
+              const successAction = successCreator(body, startAction.payload)
+              dispatch(successAction)
+              return successAction
             })
-            .catch(err => {
-              return dispatch(syncActionCreators[`${methodName}Error`](err))
+            .catch(error => {
+              const errorCreator = syncActionCreators[`${methodName}Error`]
+              const errorAction = errorCreator(error, startAction.payload)
+              dispatch(errorAction)
+              return errorAction
             })
         }
       }

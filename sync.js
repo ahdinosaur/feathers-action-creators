@@ -134,23 +134,23 @@ function createSyncActionCreators (serviceName, config) {
   }
 
   function oneEntityHandler (actionCreatorName) {
-    return function (data) {
-      assertOneEntity(actionCreatorName, data)
-      return data
+    return function (body, startPayload) {
+      assertOneEntity(actionCreatorName, body)
+      return Object.assign({ body }, startPayload)
     }
   }
 
   function manyEntitiesHandler (actionCreatorName) {
-    return function (data) {
-      assertManyEntities(actionCreatorName, data)
-      return data
+    return function (body, startPayload) {
+      assertManyEntities(actionCreatorName, body)
+      return Object.assign({ body }, startPayload)
     }
   }
 
   function errorHandler (actionCreatorName) {
-    return function (err) {
+    return function (error, startPayload) {
       assertError(actionCreatorName, error)
-      return error
+      return Object.assign(error, startPayload)
     }
   }
 
@@ -158,20 +158,20 @@ function createSyncActionCreators (serviceName, config) {
     invariant(error != null, `Expected error in ${actionCreatorName}`);
   }
 
-  function assertData (actionCreatorName, data) {
-    invariant(data != null, `Expected data in ${actionCreatorName}`)
+  function assertBody (actionCreatorName, body) {
+    invariant(body != null, `Expected body in ${actionCreatorName}`)
   }
 
-  function assertOneEntity(actionCreatorName, data) {
-    assertData(actionCreatorName, data)
-    invariant(typeof data === 'object', `Expected one entity in ${actionCreatorName})`)
-    invariant(data[key] != null, `Expected entity.${key} in ${actionCreatorName}`)
+  function assertOneEntity(actionCreatorName, body) {
+    assertBody(actionCreatorName, body)
+    invariant(typeof body === 'object', `Expected one entity in ${actionCreatorName})`)
+    invariant(body[key] != null, `Expected entity.${key} in ${actionCreatorName}`)
   }
 
-  function assertManyEntities (actionCreatorName, data) {
-    assertData(actionCreatorName, data)
-    invariant(isArray(data), `Expected many entities in ${actionCreatorName}`)
-    data.forEach(function (entity) {
+  function assertManyEntities (actionCreatorName, body) {
+    assertBody(actionCreatorName, body)
+    invariant(isArray(body), `Expected many entities in ${actionCreatorName}`)
+    body.forEach(function (entity) {
       assertOneEntity(actionCreatorName, entity)
     })
   }
