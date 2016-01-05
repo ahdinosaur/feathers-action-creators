@@ -10,7 +10,6 @@ test('integrates redux and feathers', function (t) {
   const service = createTestService()
 
   const store = createTestStore(function (state, action) {
-    console.log("action", action)
     t.pass()
     return state
   })
@@ -25,24 +24,23 @@ test('integrates redux and feathers', function (t) {
 
   store.dispatch(actions.get(0))
   .then(function (action) {
-    console.log("get action", action)
-    //t.ok(action.error)
+    // t.ok(action.error)
     t.ok(action.payload instanceof Error)
   })
 
   store.dispatch(
-    actions.create({ name: "tree" })
+    actions.create({ name: 'tree' })
   )
   .then(function (action) {
     t.notOk(action.error)
-    t.deepEqual(action.payload.body, { name: "tree", id: 0 })
+    t.deepEqual(action.payload.body, { name: 'tree', id: 0 })
 
     return store.dispatch(actions.get(0))
   })
   .then(function (action) {
     t.notOk(action.error)
     t.equal(action.payload.id, 0)
-    t.deepEqual(action.payload.body, { name: "tree", id: 0 })
+    t.deepEqual(action.payload.body, { name: 'tree', id: 0 })
     t.end()
   })
 })

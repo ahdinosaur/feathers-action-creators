@@ -19,7 +19,7 @@ function createSyncActionCreators (serviceName, config) {
   }
 
   config = config || {}
-  
+
   const metaCreators = config.metaCreators || {}
 
   const actionTypes = createActionTypes(serviceName)
@@ -156,15 +156,15 @@ function createSyncActionCreators (serviceName, config) {
     }
   }
 
-  function assertError(actionCreatorName, error) {
-    invariant(error != null, `Expected error in ${actionCreatorName}`);
+  function assertError (actionCreatorName, error) {
+    invariant(error != null, `Expected error in ${actionCreatorName}`)
   }
 
   function assertBody (actionCreatorName, body) {
     invariant(body != null, `Expected body in ${actionCreatorName}`)
   }
 
-  function assertOneEntity(actionCreatorName, body) {
+  function assertOneEntity (actionCreatorName, body) {
     assertBody(actionCreatorName, body)
     invariant(typeof body === 'object', `Expected one entity in ${actionCreatorName})`)
     invariant(body[key] != null, `Expected entity.${key} in ${actionCreatorName}`)

@@ -20,46 +20,46 @@ function createAsyncActionCreators (service, syncActionCreators, config) {
   config = config || {}
 
   return {
-    //find: (params) => {
+    // find: (params) => {
     find: createAsyncActionCreator(service, 'find'),
-    //get: (id, params) => {},
+    // get: (id, params) => {},
     get: createAsyncActionCreator(service, 'get'),
-    //create: (data, params) => {},
+    // create: (data, params) => {},
     create: createAsyncActionCreator(service, 'create'),
-    //update: (id, data, params) => {},
+    // update: (id, data, params) => {},
     update: createAsyncActionCreator(service, 'update'),
-    //patch: (id, data, params) => {},
+    // patch: (id, data, params) => {},
     patch: createAsyncActionCreator(service, 'patch'),
-    //remove: (id, params) => {}
+    // remove: (id, params) => {}
     remove: createAsyncActionCreator(service, 'remove')
   }
 
   function createAsyncActionCreator (service, methodName) {
-      return function () {
-        const args = slice(arguments)
+    return function () {
+      const args = slice(arguments)
 
-        return (dispatch) => {
-          const startCreator = syncActionCreators[`${methodName}Start`]
-          const startAction = startCreator.apply(syncActionCreators, args)
-          dispatch(startAction)
+      return (dispatch) => {
+        const startCreator = syncActionCreators[`${methodName}Start`]
+        const startAction = startCreator.apply(syncActionCreators, args)
+        dispatch(startAction)
 
-          return service[methodName].apply(service, args)
-            .then(body => {
-              const successCreator = syncActionCreators[`${methodName}Success`]
-              const successAction = successCreator(body, startAction.payload)
+        return service[methodName].apply(service, args)
+          .then(body => {
+            const successCreator = syncActionCreators[`${methodName}Success`]
+            const successAction = successCreator(body, startAction.payload)
 
-              dispatch(successAction)
-              return successAction
-            })
-            .catch(error => {
-              const errorCreator = syncActionCreators[`${methodName}Error`]
-              const errorAction = errorCreator(error, startAction.payload)
+            dispatch(successAction)
+            return successAction
+          })
+          .catch(error => {
+            const errorCreator = syncActionCreators[`${methodName}Error`]
+            const errorAction = errorCreator(error, startAction.payload)
 
-              dispatch(errorAction)
-              return errorAction
-            })
-        }
+            dispatch(errorAction)
+            return errorAction
+          })
       }
+    }
   }
 }
 
