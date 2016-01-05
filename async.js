@@ -24,7 +24,7 @@ function createAsyncActionCreators (service, syncActionCreators, config) {
     find: createAsyncActionCreator(service, 'find'),
     // get: (id, params) => {},
     get: createAsyncActionCreator(service, 'get'),
-    // create: (data, params) => {},
+    // create: (cid, data, params) => {},
     create: createAsyncActionCreator(service, 'create'),
     // update: (id, data, params) => {},
     update: createAsyncActionCreator(service, 'update'),

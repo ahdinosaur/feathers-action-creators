@@ -64,7 +64,7 @@ function createSyncActionCreators (serviceName, config) {
 
     createStart: createAction(
       actionTypes.createStart,
-      (data, params) => ({ data, params }),
+      (cid, data, params) => ({ cid, data, params }),
       metaCreators.createStart
     ),
 
