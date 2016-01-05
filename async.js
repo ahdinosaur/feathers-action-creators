@@ -10,8 +10,12 @@ module.exports = createAsyncActionCreators
  * @return object asyncActionCreators
  */
 function createAsyncActionCreators (service, syncActionCreators, config) {
-  if (service == null) throw new Error('createAsyncActionCreators: Expected service')
-  if (syncActionCreators == null) throw new Error('createAyncActionCreators: Expected syncActionCreators')
+  if (service == null) {
+    throw new Error('createAsyncActionCreators: Expected service')
+  }
+  if (syncActionCreators == null) {
+    throw new Error('createAyncActionCreators: Expected syncActionCreators')
+  }
 
   config = config || {}
 
@@ -36,22 +40,21 @@ function createAsyncActionCreators (service, syncActionCreators, config) {
 
         return (dispatch) => {
           const startCreator = syncActionCreators[`${methodName}Start`]
-          // TODO don't use apply for performance reasons
           const startAction = startCreator.apply(syncActionCreators, args)
-
           dispatch(startAction)
 
-          // TODO don't use apply for performance reasons
           return service[methodName].apply(service, args)
             .then(body => {
               const successCreator = syncActionCreators[`${methodName}Success`]
               const successAction = successCreator(body, startAction.payload)
+
               dispatch(successAction)
               return successAction
             })
             .catch(error => {
               const errorCreator = syncActionCreators[`${methodName}Error`]
               const errorAction = errorCreator(error, startAction.payload)
+
               dispatch(errorAction)
               return errorAction
             })

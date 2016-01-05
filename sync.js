@@ -1,5 +1,5 @@
 const invariant = require('invariant')
-const { createAction } = require('redux-actions')
+const createAction = require('redux-actions').createAction
 const createActionTypes = require('feathers-action-types')
 const isArray = Array.isArray
 
@@ -14,7 +14,9 @@ const constants = require('./constants')
  * @return object syncActionCreators
  */
 function createSyncActionCreators (serviceName, config) {
-  if (serviceName == null) throw new Error('createSyncActionCreators: Expected serviceName')
+  if (serviceName == null) {
+    throw new Error('createSyncActionCreators: Expected serviceName')
+  }
 
   config = config || {}
   
@@ -130,7 +132,7 @@ function createSyncActionCreators (serviceName, config) {
       actionTypes.removeError,
       errorHandler('removeError'),
       metaCreators.removeError
-    ),
+    )
   }
 
   function oneEntityHandler (actionCreatorName) {

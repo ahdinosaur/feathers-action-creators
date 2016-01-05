@@ -10,7 +10,9 @@ const createAsyncActionCreators = require('./async')
  * @return object actionCreators
  */
 function createActionCreators (service, config) {
-  if (service == null) throw new Error('createActionCreators: Expected service')
+  if (service == null) {
+    throw new Error('createActionCreators: Expected service')
+  }
 
   const syncActionCreators = createSyncActionCreators(
     service.name, config

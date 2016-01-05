@@ -1,7 +1,7 @@
 const test = require('tape')
 const feathers = require('feathers')
 const memory = require('feathers-memory')
-const { createStore, applyMiddleware } = require('redux')
+const redux = require('redux')
 const thunk = require('redux-thunk')
 
 const createActions = require('./')
@@ -48,7 +48,7 @@ test('integrates redux and feathers', function (t) {
 })
 
 function createTestStore (reducer) {
-  return applyMiddleware(thunk)(createStore)(reducer)
+  return redux.applyMiddleware(thunk)(redux.createStore)(reducer)
 }
 
 function createTestService () {
