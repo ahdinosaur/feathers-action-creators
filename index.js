@@ -18,7 +18,7 @@ function createActionCreators (service, config) {
     service.name, config
   )
   const asyncActionCreators = createAsyncActionCreators(
-    service, syncActionCreators, config
+    service, config, syncActionCreators
   )
 
   return Object.assign({}, syncActionCreators, asyncActionCreators)

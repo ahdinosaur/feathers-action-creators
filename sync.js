@@ -5,30 +5,33 @@ const isArray = Array.isArray
 
 const constants = require('./constants')
 
+module.exports = createSyncActionCreators
+
 /* Given a resource name and a config,
  * returns synchronous flux action creators
  * corresponding to that feathers resource.
  *
  * @param string serviceName
  * @param object config
+ * @param string config.key
+ * @param object config.metaCreators
  * @return object syncActionCreators
  */
 function createSyncActionCreators (serviceName, config) {
   if (serviceName == null) {
-    throw new Error('createSyncActionCreators: Expected serviceName')
+    throw new Error('feathers-action-creators/sync: Expected serviceName as first argument.')
   }
 
   config = config || {}
-
   const metaCreators = config.metaCreators || {}
+  const key = config.key || constants.DEFAULT_KEY
 
   const actionTypes = createActionTypes(serviceName)
-  const key = config.key || constants.DEFAULT_KEY
 
   return {
     findStart: createAction(
       actionTypes.findStart,
-      (params) => ({ params }),
+      (cid, params) => ({ cid, params }),
       metaCreators.findStart
     ),
 
@@ -46,7 +49,7 @@ function createSyncActionCreators (serviceName, config) {
 
     getStart: createAction(
       actionTypes.getStart,
-      (id, params) => ({ id, params }),
+      (cid, id, params) => ({ cid, id, params }),
       metaCreators.getStart
     ),
 
@@ -82,7 +85,7 @@ function createSyncActionCreators (serviceName, config) {
 
     updateStart: createAction(
       actionTypes.updateStart,
-      (id, data, params) => ({ id, data, params }),
+      (cid, id, data, params) => ({ cid, id, data, params }),
       metaCreators.updateStart
     ),
 
@@ -100,7 +103,7 @@ function createSyncActionCreators (serviceName, config) {
 
     patchStart: createAction(
       actionTypes.patchStart,
-      (id, data, params) => ({ id, data, params }),
+      (cid, id, data, params) => ({ cid, id, data, params }),
       metaCreators.patchStart
     ),
 
@@ -118,7 +121,7 @@ function createSyncActionCreators (serviceName, config) {
 
     removeStart: createAction(
       actionTypes.removeStart,
-      (id, params) => ({ id, params }),
+      (cid, id, params) => ({ cid, id, params }),
       metaCreators.removeStart
     ),
 
@@ -178,5 +181,3 @@ function createSyncActionCreators (serviceName, config) {
     })
   }
 }
-
-module.exports = createSyncActionCreators

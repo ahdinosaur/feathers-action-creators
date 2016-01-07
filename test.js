@@ -3,6 +3,7 @@ const feathers = require('feathers')
 const memory = require('feathers-memory')
 const redux = require('redux')
 const thunk = require('redux-thunk')
+const cuid = require('cuid')
 
 const createActions = require('./')
 
@@ -14,7 +15,7 @@ test('integrates redux and feathers', function (t) {
     return state
   })
 
-  const actions = createActions(service)
+  const actions = createActions(service, { cid: cuid })
 
   store.dispatch(actions.find())
   .then(function (action) {
