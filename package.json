@@ -1,6 +1,6 @@
 {
   "name": "feathers-action-creators",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "redux action creators for feathers services",
   "main": "index.js",
   "scripts": {

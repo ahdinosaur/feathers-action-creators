@@ -10,6 +10,8 @@ with [npm](https://npmjs.com):
 npm install --save feathers-action-creators
 ```
 
+relies on [`redux-thunk`](https://www.npmjs.com/package/redux-thunk) being applied in your [redux middleware](http://redux.js.org/docs/advanced/Middleware.html).
+
 ## api
 
 ### `createActionCreators(serviceName, config)`
